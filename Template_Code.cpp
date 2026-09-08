@@ -14,10 +14,10 @@ enum class Difficulty {
 class Board {
 private:
     vector<vector<char>> grid;
-    const int size;
+    int size;
 
 public:
-    Board(int size = 3){
+    Board(int s){
         // TO DO: Implement This Function
     }    
     
@@ -65,9 +65,7 @@ public:
         // TO DO: Implement This Function
     }
 
-    virtual void getMove(int& row, int& col) = 0 {
-        // Pure virtual function (No implementation needed here)
-    }
+    virtual void getMove(int& row, int& col) = 0;
 
     string getName() const{ 
         // TO DO: Implement This Function
@@ -88,8 +86,9 @@ private:
     Difficulty difficulty;
 
 public:
-    AIPlayer(const string& name, char symbol, Difficulty difficulty){
-        // TO DO: Implement This Function
+    AIPlayer(const string& name, char symbol, Difficulty difficulty) : Player(name, symbol) {
+    this->difficulty = difficulty;
+    // TO DO: Implement This Function
     }
 
     void getMove(int& row, int& col) override{
@@ -122,9 +121,9 @@ private:
     Player* currentPlayer;
 
 public:
-    Game(){
-        // TO DO: Implement This Function
-    }    
+    Game() : board(3), player1(nullptr), player2(nullptr), currentPlayer(nullptr) {
+    // TO DO: Implement This Function
+    }
     
     ~Game(){ 
         // TO DO: Implement This Function
