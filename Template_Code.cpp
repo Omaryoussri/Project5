@@ -4,54 +4,120 @@
 
 using namespace std;
 
+#define TOP_LEFT_EDGE_ROW 0
+#define TOP_LEFT_EDGE_COLUMN 0
+
+#define BOTTOM_LEFT_EDGE_ROW 2
+#define BOTTOM_LEFT_EDGE_COLUMN 0
+
+#define BOTTOM_RIGHT_EDGE 2
+
+#define TOP_RIGHT_EDGE_COLUMN 2
+#define TOP_RIGHT_EDGE_ROW 0
+
+#define CENTER 1
+
+#define FIRST 0
+#define SECOND 1
+#define THIRD 2
+
+#define GRID_SIZE 3
+
 // Enum for AI Difficulty levels
 enum class Difficulty {
     EASY,
     HARD
 };
 
+
+
 // 1. Board Class
 class Board {
 private:
-    vector<vector<char>> grid;
+    static std::vector<std::vector<char>> grid;
     int size;
 
 public:
-    Board(int s){
-        // TO DO: Implement This Function
-    }    
-    
-    void display() const{ 
-        // TO DO: Implement This Function
+    Board(int s)
+    {
+        if (s < 3)
+            size = 3;
+
+        init_grid_cells(s);
     }
 
-    bool makeMove(int row, int col, char symbol){ 
-        // TO DO: Implement This Function
+    static void init_grid_cells(int sz)
+    {
+        for (int column = 0; column < sz; column++)
+            for (int row = 0; row < sz; ++row)
+                grid[row][column] = ' ';
+    }
+
+    void display() const {
+
+    }
+
+    bool makeMove(int row, int col, char symbol){
+        if (!isValidMove(row, col))
+            return false;
+
+        // بالإفتراض انه column هي اول vector
+        // يعني بطلع او بنزل column بعد كدا بروح يمين او شمال row
+        grid.at(col).at(row) = symbol;
+
+        return true;
     }
 
     bool isValidMove(int row, int col) const{
-        // TO DO: Implement This Function
+        if (grid.at(col).at(row) != ' ')
+            return false;
+
+        return true;
+    }
+
+    static bool check_diagonal(char symbol)
+    {
+        return (grid[TOP_LEFT_EDGE_COLUMN][TOP_LEFT_EDGE_ROW]       == grid[CENTER][CENTER] == grid[BOTTOM_RIGHT_EDGE][BOTTOM_RIGHT_EDGE] == symbol)
+            || (grid[BOTTOM_LEFT_EDGE_COLUMN][BOTTOM_LEFT_EDGE_ROW] == grid[CENTER][CENTER] == grid[TOP_RIGHT_EDGE_COLUMN][TOP_RIGHT_EDGE_ROW] == symbol);
+    }
+
+    static bool check_row(char symbol)
+    {
+        return (grid[FIRST][FIRST]  == grid[SECOND][FIRST]  == grid[THIRD][FIRST] == symbol)
+            || (grid[FIRST][SECOND] == grid[SECOND][SECOND] == grid[THIRD][SECOND] == symbol)
+            || (grid[FIRST][THIRD]  == grid[SECOND][THIRD]  == grid[THIRD][THIRD] == symbol);
+    }
+
+    static bool check_columns(char symbol)
+    {
+        return (grid[FIRST][FIRST]  == grid[FIRST][SECOND]   == grid[FIRST][THIRD] == symbol)
+            || (grid[SECOND][FIRST] == grid[SECOND][SECOND]  == grid[SECOND][THIRD] == symbol)
+            || (grid[THIRD][FIRST]  == grid[THIRD][SECOND]   == grid[THIRD][THIRD] == symbol);
     }
 
     bool checkWin(char symbol) const{
-        // TO DO: Implement This Function
+        return check_columns(symbol)
+            || check_row(symbol)
+            || check_diagonal(symbol);
     }
 
-    bool isFull() const{
-        // TO DO: Implement This Function
+    bool isFull() const {
+        return (grid[SECOND][FIRST]  != ' ' && grid[SECOND][FIRST + 1]  != ' ' && grid[SECOND][FIRST - 1]  != ' ')
+            && (grid[SECOND][SECOND] != ' ' && grid[SECOND][SECOND + 1] != ' ' && grid[SECOND][SECOND - 1] != ' ')
+            && (grid[SECOND][THIRD]  != ' ' && grid[SECOND][THIRD + 1]  != ' ' && grid[SECOND][THIRD - 1]  != ' ');
     }
 
-    char getCell(int row, int col) const{ 
-        // TO DO: Implement This Function
+    char getCell(int row, int col) const {
+        return grid[col][row];
     }
 
-    void reset(){ 
-        // TO DO: Implement This Function
+    static void reset() {
+        init_grid_cells(GRID_SIZE);
     }
 
-    int getSize() const{ 
-        // TO DO: Implement This Function
-    }    
+    int getSize() const{
+        return size;
+    }
 };
 
 // 2. Player Class (Abstract)
