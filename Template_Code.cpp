@@ -75,7 +75,7 @@ public:
     }
 
     char getCell(int row, int col) const {
-        return grid[col][row];
+        return grid[row][col]
     }
 
     void reset() {
@@ -259,7 +259,7 @@ public:
             currentPlayer = player2;
         }
         else{
-            currentPlayer == player1;
+            currentPlayer = player1;
         }
     }
 
