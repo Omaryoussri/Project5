@@ -29,8 +29,6 @@ enum class Difficulty {
     HARD
 };
 
-
-
 // 1. Board Class
 class Board {
 private:
@@ -40,39 +38,18 @@ private:
 public:
     Board(int s)
     {
-        if (s < 3)
-            size = 3;
 
-        init_grid_cells(s);
     }
-
-    static void init_grid_cells(int sz)
-    {
-        for (int column = 0; column < sz; column++)
-            for (int row = 0; row < sz; ++row)
-                grid[row][column] = ' ';
-    }
-
     void display() const {
 
     }
 
     bool makeMove(int row, int col, char symbol){
-        if (!isValidMove(row, col))
-            return false;
 
-        // بالإفتراض انه column هي اول vector
-        // يعني بطلع او بنزل column بعد كدا بروح يمين او شمال row
-        grid.at(col).at(row) = symbol;
-
-        return true;
     }
 
     bool isValidMove(int row, int col) const{
-        if (grid.at(col).at(row) != ' ')
-            return false;
 
-        return true;
     }
 
     static bool check_diagonal(char symbol)
@@ -112,11 +89,10 @@ public:
     }
 
     static void reset() {
-        init_grid_cells(GRID_SIZE);
     }
 
     int getSize() const{
-        return size;
+
     }
 };
 
