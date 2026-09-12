@@ -75,7 +75,7 @@ public:
     }
 
     char getCell(int row, int col) const {
-        return grid[row][col]
+        return grid[row][col];
     }
 
     void reset() {
