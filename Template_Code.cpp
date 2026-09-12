@@ -1,27 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
 using namespace std;
-
-#define TOP_LEFT_EDGE_ROW 0
-#define TOP_LEFT_EDGE_COLUMN 0
-
-#define BOTTOM_LEFT_EDGE_ROW 2
-#define BOTTOM_LEFT_EDGE_COLUMN 0
-
-#define BOTTOM_RIGHT_EDGE 2
-
-#define TOP_RIGHT_EDGE_COLUMN 2
-#define TOP_RIGHT_EDGE_ROW 0
-
-#define CENTER 1
-
-#define FIRST 0
-#define SECOND 1
-#define THIRD 2
-
-#define GRID_SIZE 3
 
 // Enum for AI Difficulty levels
 enum class Difficulty {
@@ -32,67 +12,78 @@ enum class Difficulty {
 // 1. Board Class
 class Board {
 private:
-    static std::vector<std::vector<char>> grid;
+    vector<std::vector<char>> grid;
     int size;
 
 public:
     Board(int s)
     {
-
+        // TO DO: Implement This Function
     }
     void display() const {
-
+        // TO DO: Implement This Function
     }
 
     bool makeMove(int row, int col, char symbol){
-
+        // TO DO: Implement This Function
     }
 
     bool isValidMove(int row, int col) const{
-
+        // TO DO: Implement This Function
     }
 
-    static bool check_diagonal(char symbol)
+    bool check_diagonal(char symbol)
     {
-        return (grid[TOP_LEFT_EDGE_COLUMN][TOP_LEFT_EDGE_ROW]       == grid[CENTER][CENTER] == grid[BOTTOM_RIGHT_EDGE][BOTTOM_RIGHT_EDGE] == symbol)
-            || (grid[BOTTOM_LEFT_EDGE_COLUMN][BOTTOM_LEFT_EDGE_ROW] == grid[CENTER][CENTER] == grid[TOP_RIGHT_EDGE_COLUMN][TOP_RIGHT_EDGE_ROW] == symbol);
+        // TO DO: Implement This Function
     }
 
-    static bool check_row(char symbol)
+    bool check_row(char symbol)
     {
-        return (grid[FIRST][FIRST]  == grid[SECOND][FIRST]  == grid[THIRD][FIRST] == symbol)
-            || (grid[FIRST][SECOND] == grid[SECOND][SECOND] == grid[THIRD][SECOND] == symbol)
-            || (grid[FIRST][THIRD]  == grid[SECOND][THIRD]  == grid[THIRD][THIRD] == symbol);
+        // TO DO: Implement This Function
     }
 
-    static bool check_columns(char symbol)
+    bool check_columns(char symbol)
     {
-        return (grid[FIRST][FIRST]  == grid[FIRST][SECOND]   == grid[FIRST][THIRD] == symbol)
-            || (grid[SECOND][FIRST] == grid[SECOND][SECOND]  == grid[SECOND][THIRD] == symbol)
-            || (grid[THIRD][FIRST]  == grid[THIRD][SECOND]   == grid[THIRD][THIRD] == symbol);
+        // TO DO: Implement This Function
     }
 
-    bool checkWin(char symbol) const{
-        return check_columns(symbol)
-            || check_row(symbol)
-            || check_diagonal(symbol);
+    bool checkWin(char symbol) const {
+        for (int i = 0; i < size; ++i) {
+            bool rowWin = true, colWin = true;
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j] != symbol) rowWin = false;
+                if (grid[j][i] != symbol) colWin = false;
+            }
+            if (rowWin || colWin) return true;
+        }
+
+        bool diag1 = true, diag2 = true;
+        for (int i = 0; i < size; ++i) {
+            if (grid[i][i] != symbol) diag1 = false;
+            if (grid[i][size - 1 - i] != symbol) diag2 = false;
+        }
+        return diag1 || diag2;
     }
 
     bool isFull() const {
-        return (grid[SECOND][FIRST]  != ' ' && grid[SECOND][FIRST + 1]  != ' ' && grid[SECOND][FIRST - 1]  != ' ')
-            && (grid[SECOND][SECOND] != ' ' && grid[SECOND][SECOND + 1] != ' ' && grid[SECOND][SECOND - 1] != ' ')
-            && (grid[SECOND][THIRD]  != ' ' && grid[SECOND][THIRD + 1]  != ' ' && grid[SECOND][THIRD - 1]  != ' ');
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j] == ' ') return false;
+            }
+        }
+        return true;
     }
 
     char getCell(int row, int col) const {
         return grid[col][row];
     }
 
-    static void reset() {
+    void reset() {
+        // TO DO: Implement This Function
     }
 
     int getSize() const{
-
+        // TO DO: Implement This Function
     }
 };
 
