@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
 using namespace std;
 
 // Enum for AI Difficulty levels
@@ -13,19 +12,19 @@ enum class Difficulty {
 // 1. Board Class
 class Board {
 private:
-    vector<vector<char>> grid;
+    vector<std::vector<char>> grid;
     int size;
 
 public:
-    Board(int s){
+    Board(int s)
+    {
         // TO DO: Implement This Function
-    }    
-    
-    void display() const{ 
+    }
+    void display() const {
         // TO DO: Implement This Function
     }
 
-    bool makeMove(int row, int col, char symbol){ 
+    bool makeMove(int row, int col, char symbol){
         // TO DO: Implement This Function
     }
 
@@ -33,25 +32,59 @@ public:
         // TO DO: Implement This Function
     }
 
-    bool checkWin(char symbol) const{
+    bool check_diagonal(char symbol)
+    {
         // TO DO: Implement This Function
     }
 
-    bool isFull() const{
+    bool check_row(char symbol)
+    {
         // TO DO: Implement This Function
     }
 
-    char getCell(int row, int col) const{ 
+    bool check_columns(char symbol)
+    {
         // TO DO: Implement This Function
     }
 
-    void reset(){ 
+    bool checkWin(char symbol) const {
+        for (int i = 0; i < size; ++i) {
+            bool rowWin = true, colWin = true;
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j] != symbol) rowWin = false;
+                if (grid[j][i] != symbol) colWin = false;
+            }
+            if (rowWin || colWin) return true;
+        }
+
+        bool diag1 = true, diag2 = true;
+        for (int i = 0; i < size; ++i) {
+            if (grid[i][i] != symbol) diag1 = false;
+            if (grid[i][size - 1 - i] != symbol) diag2 = false;
+        }
+        return diag1 || diag2;
+    }
+
+    bool isFull() const {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (grid[i][j] == ' ') return false;
+            }
+        }
+        return true;
+    }
+
+    char getCell(int row, int col) const {
+        return grid[col][row];
+    }
+
+    void reset() {
         // TO DO: Implement This Function
     }
 
-    int getSize() const{ 
+    int getSize() const{
         // TO DO: Implement This Function
-    }    
+    }
 };
 
 // 2. Player Class (Abstract)
