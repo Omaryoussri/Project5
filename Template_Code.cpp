@@ -16,12 +16,34 @@ private:
     int size;
 
 public:
-    Board(int s)
+    Board(int size = 3)
     {
-        // TO DO: Implement This Function
+        this->size = size;
+        grid.resize(size, vector<char>(size, ' '));
     }
     void display() const {
-        // TO DO: Implement This Function
+        cout << "\n    ";
+    for (int j = 0; j < size; ++j) {
+        cout << j << "   ";
+    }
+    cout << "\n  ";
+    for (int j = 0; j < size; ++j) {
+        cout << "----";
+    }
+    cout << "-\n";
+
+    for (int i = 0; i < size; ++i) {
+        cout << i << " |";
+        for (int j = 0; j < size; ++j) {
+            cout << " " << (grid[i][j] == ' ' ? '.' : grid[i][j]) << " |";
+        }
+        cout << "\n  ";
+        for (int j = 0; j < size; ++j) {
+            cout << "----";
+        }
+        cout << "-\n";
+    }
+    cout << "\n";
     }
 
     bool makeMove(int row, int col, char symbol){
@@ -79,11 +101,15 @@ public:
     }
 
     void reset() {
-        // TO DO: Implement This Function
+        for (int i = 0; i < size; ++i) {
+             for (int j = 0; j < size; ++j) {
+                grid[i][j] = ' ';
+            }
+        }
     }
 
     int getSize() const{
-        // TO DO: Implement This Function
+        return size;
     }
 };
 
