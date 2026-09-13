@@ -205,6 +205,15 @@ public:
 };
 
 // 4. Game Class
+class HumanPlayer : public Player {
+public:
+    HumanPlayer(const string& name, char symbol) : Player(name, symbol) {}
+
+    void getMove(int& row, int& col) override {
+        cout << "Enter row and column (0 to 2) separated by a space: ";
+        cin >> row >> col;
+    }
+};
 class Game {
 private:
     Board board;
@@ -214,11 +223,13 @@ private:
 
 public:
     Game() : board(3), player1(nullptr), player2(nullptr), currentPlayer(nullptr) {
-    // TO DO: Implement This Function
+        showMenu();
+        currentPlayer = player1;
     }
     
     ~Game(){ 
-        // TO DO: Implement This Function
+        delete player1;
+        delete player2;
     }
 
     void start(){
@@ -243,15 +254,49 @@ public:
     }
 
     void showMenu(){ 
-        // TO DO: Implement This Function
+        int choice = 0;
+        cout << "===== Tic Tac Toe =====\n";
+        cout << "1. Player vs Player\n";
+        cout << "2. Player vs Computer (Easy)\n";
+        cout << "3. Player vs Computer (Hard)\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+    switch (choice) {
+        case 1:
+            setupPvP();
+            break;
+        case 2:
+            setupPvC(Difficulty::EASY);
+            break;
+        case 3:
+            setupPvC(Difficulty::HARD);
+            break;
+        default:
+            cout << "Invalid choice, defaulting to Player vs Player.\n";
+            setupPvP();
+            break;
+    }
     }
 
     void setupPvP(){ 
-        // TO DO: Implement This Function
+         string name1, name2;
+         cout << "Enter name for Player 1 (X): ";
+         cin >> name1;
+         cout << "Enter name for Player 2 (O): ";
+         cin >> name2;
+
+         player1 = new HumanPlayer(name1, 'X');
+         player2 = new HumanPlayer(name2, 'O');
     }
 
     void setupPvC(Difficulty difficulty){ 
-        // TO DO: Implement This Function
+        string name1;
+        cout << "Enter your name: ";
+        cin >> name1;
+
+        player1 = new HumanPlayer(name1, 'X');
+        player2 = new AIPlayer("Computer", 'O', difficulty);
     }
 
     void switchPlayer(){ 
