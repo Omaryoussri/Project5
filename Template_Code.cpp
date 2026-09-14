@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -21,29 +22,30 @@ public:
         this->size = size;
         grid.resize(size, vector<char>(size, ' '));
     }
+
     void display() const {
         cout << "\n    ";
-    for (int j = 0; j < size; ++j) {
-        cout << j << "   ";
-    }
-    cout << "\n  ";
-    for (int j = 0; j < size; ++j) {
-        cout << "----";
-    }
-    cout << "-\n";
-
-    for (int i = 0; i < size; ++i) {
-        cout << i << " |";
         for (int j = 0; j < size; ++j) {
-            cout << " " << (grid[i][j] == ' ' ? '.' : grid[i][j]) << " |";
+            cout << j << "   ";
         }
         cout << "\n  ";
         for (int j = 0; j < size; ++j) {
             cout << "----";
         }
         cout << "-\n";
-    }
-    cout << "\n";
+
+        for (int i = 0; i < size; ++i) {
+            cout << i << " |";
+            for (int j = 0; j < size; ++j) {
+                cout << " " << (grid[i][j] == ' ' ? '.' : grid[i][j]) << " |";
+            }
+            cout << "\n  ";
+            for (int j = 0; j < size; ++j) {
+                cout << "----";
+            }
+            cout << "-\n";
+        }
+        cout << "\n";
     }
 
     bool makeMove(int row, int col, char symbol){
@@ -102,7 +104,7 @@ public:
 
     void reset() {
         for (int i = 0; i < size; ++i) {
-             for (int j = 0; j < size; ++j) {
+            for (int j = 0; j < size; ++j) {
                 grid[i][j] = ' ';
             }
         }
@@ -120,23 +122,24 @@ protected:
     char symbol;
 
 public:
-    Player(const string& name, char symbol){ 
-        // TO DO: Implement This Function
+    Player(const string& name, char symbol){
+        this->name = name;
+        this->symbol = symbol;
     }
 
     virtual void getMove(int& row, int& col) = 0;
 
-    string getName() const{ 
-        // TO DO: Implement This Function
-    }    
-    
-    char getSymbol() const{ 
-        // TO DO: Implement This Function
-    }    
-    
+    string getName() const{
+        return name;
+    }
+
+    char getSymbol() const{
+        return symbol;
+    }
+
     void setName(const string& name){
-        // TO DO: Implement This Function
-    }    
+        this->name = name;
+    }
 };
 
 // 3. AIPlayer Class (Derived from Player)
@@ -149,6 +152,7 @@ public:
         this->difficulty = difficulty;
         // TO DO: Implement This Function
     }
+
     void getMove(int& row, int& col) override {
 
     }
@@ -161,73 +165,72 @@ public:
         // TO DO: Implement This Function
     }
 
-
     int minimax(const Board& board, int depth, bool isMax, char aiSymbol, char humanSymbol) const {
-    int score = evaluateBoard(board);
+        int score = evaluateBoard(board);
 
-    if (score == 10) return score - depth;
-    if (score == -10) return score + depth;
-    if (board.isFull()) return 0;
+        if (score == 10) return score - depth;
+        if (score == -10) return score + depth;
+        if (board.isFull()) return 0;
 
-    int size = board.getSize();
+        int size = board.getSize();
 
-    if (isMax) {
-        int best = -1000;
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                if (board.isValidMove(r, c)) {
-                    Board tempBoard = board; 
-                    tempBoard.makeMove(r, c, aiSymbol);
-                    best = std::max(best, minimax(tempBoard, depth + 1, false, aiSymbol, humanSymbol));
+        if (isMax) {
+            int best = -1000;
+            for (int r = 0; r < size; r++) {
+                for (int c = 0; c < size; c++) {
+                    if (board.isValidMove(r, c)) {
+                        Board tempBoard = board;
+                        tempBoard.makeMove(r, c, aiSymbol);
+                        best = std::max(best, minimax(tempBoard, depth + 1, false, aiSymbol, humanSymbol));
+                    }
                 }
             }
-        }
-        return best;
-    } else {
-        int best = 1000;
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                if (board.isValidMove(r, c)) {
-                    Board tempBoard = board; 
-                    tempBoard.makeMove(r, c, humanSymbol);
-                    best = std::min(best, minimax(tempBoard, depth + 1, true, aiSymbol, humanSymbol));
+            return best;
+        } else {
+            int best = 1000;
+            for (int r = 0; r < size; r++) {
+                for (int c = 0; c < size; c++) {
+                    if (board.isValidMove(r, c)) {
+                        Board tempBoard = board;
+                        tempBoard.makeMove(r, c, humanSymbol);
+                        best = std::min(best, minimax(tempBoard, depth + 1, true, aiSymbol, humanSymbol));
+                    }
                 }
             }
+            return best;
         }
-        return best;
     }
-}
 
     void getBestMove(const Board& board, int& row, int& col) const {
-    int bestVal = -1000;
-    row = -1;
-    col = -1;
-    char opponentSymbol = (symbol == 'X') ? 'O' : 'X';
-    int size = board.getSize();
+        int bestVal = -1000;
+        row = -1;
+        col = -1;
+        char opponentSymbol = (symbol == 'X') ? 'O' : 'X';
+        int size = board.getSize();
 
-    for (int r = 0; r < size; r++) {
-        for (int c = 0; c < size; c++) {
-            if (board.isValidMove(r, c)) {
-                Board tempBoard = board; 
-                tempBoard.makeMove(r, c, symbol);
-                int moveVal = minimax(tempBoard, 0, false, symbol, opponentSymbol);
+        for (int r = 0; r < size; r++) {
+            for (int c = 0; c < size; c++) {
+                if (board.isValidMove(r, c)) {
+                    Board tempBoard = board;
+                    tempBoard.makeMove(r, c, symbol);
+                    int moveVal = minimax(tempBoard, 0, false, symbol, opponentSymbol);
 
-                if (moveVal > bestVal) {
-                    row = r;
-                    col = c;
-                    bestVal = moveVal;
+                    if (moveVal > bestVal) {
+                        row = r;
+                        col = c;
+                        bestVal = moveVal;
+                    }
                 }
             }
         }
     }
-}
 
     int evaluateBoard(const Board& board) const {
         char opponentSymbol = (symbol == 'X') ? 'O' : 'X';
         if (board.checkWin(symbol)) return 10;
         if (board.checkWin(opponentSymbol)) return -10;
         return 0;
-    }    
+    }
 };
 
 // 4. Game Class
@@ -240,6 +243,7 @@ public:
         cin >> row >> col;
     }
 };
+
 class Game {
 private:
     Board board;
@@ -252,8 +256,8 @@ public:
         showMenu();
         currentPlayer = player1;
     }
-    
-    ~Game(){ 
+
+    ~Game(){
         delete player1;
         delete player2;
     }
@@ -275,11 +279,12 @@ public:
                 displayResult();
                 break;
             }
+
             switchPlayer();
         }
     }
 
-    void showMenu(){ 
+    void showMenu(){
         int choice = 0;
         cout << "===== Tic Tac Toe =====\n";
         cout << "1. Player vs Player\n";
@@ -288,35 +293,35 @@ public:
         cout << "Enter your choice: ";
         cin >> choice;
 
-    switch (choice) {
-        case 1:
-            setupPvP();
-            break;
-        case 2:
-            setupPvC(Difficulty::EASY);
-            break;
-        case 3:
-            setupPvC(Difficulty::HARD);
-            break;
-        default:
-            cout << "Invalid choice, defaulting to Player vs Player.\n";
-            setupPvP();
-            break;
-    }
-    }
-
-    void setupPvP(){ 
-         string name1, name2;
-         cout << "Enter name for Player 1 (X): ";
-         cin >> name1;
-         cout << "Enter name for Player 2 (O): ";
-         cin >> name2;
-
-         player1 = new HumanPlayer(name1, 'X');
-         player2 = new HumanPlayer(name2, 'O');
+        switch (choice) {
+            case 1:
+                setupPvP();
+                break;
+            case 2:
+                setupPvC(Difficulty::EASY);
+                break;
+            case 3:
+                setupPvC(Difficulty::HARD);
+                break;
+            default:
+                cout << "Invalid choice, defaulting to Player vs Player.\n";
+                setupPvP();
+                break;
+        }
     }
 
-    void setupPvC(Difficulty difficulty){ 
+    void setupPvP(){
+        string name1, name2;
+        cout << "Enter name for Player 1 (X): ";
+        cin >> name1;
+        cout << "Enter name for Player 2 (O): ";
+        cin >> name2;
+
+        player1 = new HumanPlayer(name1, 'X');
+        player2 = new HumanPlayer(name2, 'O');
+    }
+
+    void setupPvC(Difficulty difficulty){
         string name1;
         cout << "Enter your name: ";
         cin >> name1;
@@ -325,7 +330,7 @@ public:
         player2 = new AIPlayer("Computer", 'O', difficulty);
     }
 
-    void switchPlayer(){ 
+    void switchPlayer(){
         if(currentPlayer == player1){
             currentPlayer = player2;
         }
@@ -344,7 +349,7 @@ public:
             player->getMove(row, col);
         }
         board.makeMove(row, col, player->getSymbol());
-        
+
     }
 
     void handleAIMove(AIPlayer* aiPlayer){
@@ -370,7 +375,7 @@ public:
             cout << "Congratulations! " << player1->getName() << " wins!\n";
         }
         else if(board.checkWin(player2->getSymbol())){
-           cout << "Congratulations! " << player2->getName() << " wins!\n"; 
+            cout << "Congratulations! " << player2->getName() << " wins!\n";
         }
         else{
             cout << "It's a draw!\n";
@@ -379,7 +384,7 @@ public:
 
     void reset() {
         // TO DO: Implement This Function
-    }    
+    }
 };
 
 // ==========================================
@@ -388,6 +393,7 @@ public:
 int main() {
     // Game myGame;
     // myGame.start();
-    
+
     return 0;
 }
+
