@@ -48,13 +48,60 @@ public:
         cout << "\n";
     }
 
-    bool makeMove(int row, int col, char symbol){
-        // TO DO: Implement This Function
+
+
+
+
+
+
+    // My Task:
+    bool makeMove(int row, int col, char symbol)
+    {
+        if (isValidMove(row, col))
+        {
+            grid[row][col] = symbol;
+            return true;
+        }
+        return false;
+    }
+    bool isValidMove(int row, int col) const
+    {
+        if (row < 0 || row >= size || col < 0 || col >= size)
+        {
+            return false;
+        }
+
+        if (grid[row][col] != '')
+        {
+            return false;
+        }
+
+        return true;
     }
 
-    bool isValidMove(int row, int col) const{
-        // TO DO: Implement This Function
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     bool check_diagonal(char symbol)
     {
