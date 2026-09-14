@@ -48,15 +48,27 @@ public:
         cout << "\n";
     }
 
-    bool makeMove(int row, int col, char symbol){
-        // TO DO: Implement This Function
-    }
 
-    bool isValidMove(int row, int col) const{
-        // TO DO: Implement This Function
-    }
 
-    bool check_diagonal(char symbol)
+
+
+
+
+    // My Task:
+    bool makeMove(int row, int col, char symbol) {
+    if (isValidMove(row, col)) {
+        grid[row][col] = symbol;
+        return true;
+    }
+    return false;
+}
+
+    bool isValidMove(int row, int col) const {
+    return (row >= 0 && row < size && col >= 0 && col < size && grid[row][col] == ' ');
+}
+
+
+bool check_diagonal(char symbol)
     {
         // TO DO: Implement This Function
     }
@@ -153,9 +165,7 @@ public:
         // TO DO: Implement This Function
     }
 
-    void getMove(int& row, int& col) override {
-
-    }
+    void getMove(int& row, int& col) override {}
 
     void setDifficulty(Difficulty newDifficulty) {
         difficulty = newDifficulty;
@@ -383,7 +393,8 @@ public:
     }
 
     void reset() {
-        // TO DO: Implement This Function
+        board.reset();
+        currentPlayer = player1;
     }
 };
 
